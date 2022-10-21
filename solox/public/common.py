@@ -245,11 +245,19 @@ class file:
         jankData = self.readLog(scene=scene, filename=f'jank.log')[1]
         jankAvg = f'{int(sum(jankData) / len(jankData))}'
 
-        flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flowSend = f'{round(float(sum(flowSendData) / 1024), 2)}MB'
+        # kmly audit start-----------------------------------------------------
+        # flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
+        # flowSend = f'{round(float(sum(flowSendData) / 1024), 2)}MB'
+        #
+        # flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
+        # flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
+        # --------------------------------------------------------------------
+        flowSendData = self.readLog(scene=scene, filename=f'upflow_sum.log')[1]
+        flowSend = f'{round(float((float(flowSendData[-1])-float(flowSendData[0])) / 1024), 2)}MB'
 
-        flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
+        flowRecvData = self.readLog(scene=scene, filename=f'downflow_sum.log')[1]
+        flowRecv = f'{round(float((float(flowRecvData[-1])-float(flowRecvData[0])) / 1024), 2)}MB'
+        # kmly audit end-------------------------------------------------------
 
         apm_dict = {
             "cpuAppRate": cpuAppRate,

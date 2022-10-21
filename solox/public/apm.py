@@ -194,7 +194,8 @@ class Flow:
         recNum_final = round(float(float(m_final.group(1)) / 1024), 2)
         sendNum = round(float(sendNum_final - sendNum_pre), 2)
         recNum = round(float(recNum_final - recNum_pre), 2)
-        return sendNum, recNum
+        # kmly add  sendNum_pre, recNum_pre
+        return sendNum, recNum, sendNum_pre, recNum_pre
 
     def getiOSNet(self):
         """Get iOS upflow and downflow data"""
@@ -207,12 +208,15 @@ class Flow:
     def getNetWorkData(self):
         """Get the upflow and downflow data, unit:KB"""
         if self.platform == 'Android':
-            sendNum, recNum = self.getAndroidNet()
+            sendNum, recNum, sendNum_pre, recNum_pre = self.getAndroidNet()
         else:
             sendNum, recNum = self.getiOSNet()
         apm_time = datetime.datetime.now().strftime('%H:%M:%S')
         f.add_log(f'{f.report_dir}/upflow.log', apm_time, sendNum)
         f.add_log(f'{f.report_dir}/downflow.log', apm_time, recNum)
+        # kmly add  sendNum_pre, recNum_pre
+        f.add_log(f'{f.report_dir}/upflow_sum.log', apm_time, sendNum_pre)
+        f.add_log(f'{f.report_dir}/downflow_sum.log', apm_time, recNum_pre)
         return sendNum, recNum
 
 
